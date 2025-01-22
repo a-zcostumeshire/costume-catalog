@@ -40,4 +40,25 @@ export const costumeService = {
     const costumeRef = doc(db, 'costumes', costumeId);
     await updateDoc(costumeRef, { status });
   }
+}
+  // Add to costumeService.js
+updateCostume: async (costumeId, costumeData, imageFile) => {
+  try {
+    let imageUrl = costumeData.imageUrl;
+    if (imageFile) {
+      const storageRef = ref(storage, `costumes/${imageFile.name}`);
+      await uploadBytes(storageRef, imageFile);
+      imageUrl = await getDownloadURL(storageRef);
+    }
+
+    const costumeRef = doc(db, 'costumes', costumeId);
+    await updateDoc(costumeRef, {
+      ...costumeData,
+      imageUrl,
+      updatedAt: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Error updating costume:', error);
+    throw error;
+  }
 };
