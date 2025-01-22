@@ -139,4 +139,30 @@ export const CostumeForm = ({ onSuccess }) => {
       </CardContent>
     </Card>
   );
+}
+// Add to CostumeForm.js
+const [imagePreview, setImagePreview] = useState(null);
+
+// Add to file input onChange:
+const handleImageChange = (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    setImageFile(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreview(reader.result);
+    };
+    reader.readAsDataURL(file);
+  }
 };
+
+// Add after file input:
+{imagePreview && (
+  <div className="mt-2">
+    <img 
+      src={imagePreview} 
+      alt="Preview" 
+      className="max-w-[200px] h-auto rounded"
+    />
+  </div>
+)};
