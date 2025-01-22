@@ -21,3 +21,12 @@ useEffect(() => {
     }} />
   )}
 </TabsContent>
+// Add to CostumeCatalog.js
+const filteredCostumes = costumes.filter(costume => {
+  const matchesCategory = selectedCategory === 'all' || costume.category === selectedCategory;
+  const matchesSearch = costume.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                       costume.description.toLowerCase().includes(searchTerm.toLowerCase());
+  return matchesCategory && matchesSearch;
+});
+
+// Use filteredCostumes instead of costumes in your mapping
