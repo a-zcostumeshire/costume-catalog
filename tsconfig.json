@@ -11,7 +11,7 @@
     ],
     "strictNullChecks": true,
     "noEmit": true,
-    "module": "esmext",
+    "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
