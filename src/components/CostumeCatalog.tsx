@@ -15,23 +15,7 @@ export const CostumeCatalog = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [user, setUser] = useState(null);
   const [activeTab, setActiveTab] = useState('catalog');
-  return (
-    <Tabs value={activeTab} onValueChange={setActiveTab}>
-      <TabsList>
-        <TabsTrigger value="catalog">Catalog</TabsTrigger>
-        <TabsTrigger value="admin">Admin</TabsTrigger>
-      </TabsList>
 
-      <TabsContent value="catalog">
-        {/* Your catalog content */}
-      </TabsContent>
-
-      <TabsContent value="admin">
-        {/* Admin content */}
-      </TabsContent>
-    </Tabs>
-  );
-};
   useEffect(() => {
     const loadCostumes = async () => {
       const data = await costumeService.getCostumes();
@@ -53,14 +37,14 @@ export const CostumeCatalog = () => {
         <TabsTrigger value="catalog">Catalog</TabsTrigger>
         <TabsTrigger value="admin">Admin</TabsTrigger>
       </TabsList>
-
       <TabsContent value="catalog">
-        {/* Catalog content using filteredCostumes */}
         {filteredCostumes.map(costume => (
-          // Render costume items
+          <div key={costume.id}>
+            {/* Render costume items */}
+            {costume.name}
+          </div>
         ))}
       </TabsContent>
-
       <TabsContent value="admin">
         {!user ? (
           <Auth onLogin={() => setActiveTab('admin')} />
