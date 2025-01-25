@@ -20,6 +20,7 @@ export const CostumeCatalog = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [user, setUser] = useState<User | null>(null);
   const [activeTab, setActiveTab] = useState('catalog');
+  const [editingCostume, setEditingCostume] = useState<Costume | null>(null);
 
   useEffect(() => {
     // Mock data for testing purposes
@@ -42,27 +43,62 @@ export const CostumeCatalog = () => {
   console.log('Filtered costumes:', filteredCostumes);
 
   return (
-    <Tabs value={activeTab} onValueChange={setActiveTab}>
-      <TabsList value={activeTab} onValueChange={setActiveTab}>
-        <TabsTrigger value="catalog" onValueChange={setActiveTab}>Catalog</TabsTrigger>
-        <TabsTrigger value="admin" onValueChange={setActiveTab}>Admin</TabsTrigger>
-      </TabsList>
-      <TabsContent value="catalog" activeValue={activeTab}>
-        {filteredCostumes.map(costume => (
-          <div key={costume.id}>
-            {costume.name}
-          </div>
-        ))}
-      </TabsContent>
-      <TabsContent value="admin" activeValue={activeTab}>
-        {!user ? (
-          <Auth onLogin={() => setActiveTab('admin')} />
-        ) : (
-          <CostumeForm onSuccess={(newCostumes: Costume[]) => {
-            setCostumes(newCostumes); // Update the costumes state with the new costumes
-          }} />
-        )}
-      </TabsContent>
-    </Tabs>
+    <div>
+      <h1>Costume Catalog</h1>
+      <style jsx>{`
+        .tabs {
+          display: flex;
+          flex-direction: column;
+        }
+        .tabs-list {
+          display: flex;
+          margin-bottom: 1rem;
+        }
+        .tabs-trigger {
+          margin-right: 1rem;
+          padding: 0.5rem 1rem;
+          cursor: pointer;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+        .tabs-content {
+          padding: 1rem;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+        .costume-item {
+          margin-bottom: 1rem;
+        }
+      `}</style>
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="tabs">
+        <TabsList value={activeTab} onValueChange={setActiveTab} className="tabs-list">
+          <TabsTrigger value="catalog" onValueChange={setActiveTab} className="tabs-trigger">Catalog</TabsTrigger>
+          <TabsTrigger value="admin" onValueChange={setActiveTab} className="tabs-trigger">Admin</TabsTrigger>
+        </TabsList>
+        <TabsContent value="catalog" activeValue={activeTab} className="tabs-content">
+          {filteredCostumes.length > 0 ? (
+            filteredCostumes.map(costume => (
+              <div key={costume.id} className="costume-item">
+                {costume.name}
+              </div>
+            ))
+          ) : (
+            <p>No costumes found.</p>
+          )}
+        </TabsContent>
+        <TabsContent value="admin" activeValue={activeTab} className="tabs-content">
+          {!user ? (
+            <Auth onLogin={() => setActiveTab('admin')} />
+          ) : (
+            <CostumeForm
+              initialData={editingCostume}
+              onSuccess={(newCostumes: Costume[]) => {
+                setCostumes(newCostumes); // Update the costumes state with the new costumes
+              }}
+            />
+          )}
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 };
