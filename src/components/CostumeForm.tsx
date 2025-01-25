@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Card, CardHeader, CardTitle, CardContent } from './ui/card';
+import { Input } from './ui/input';
+import { Button } from './ui/button';
+import { Textarea } from './ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { costumeService } from '../firebase/costumeService';
 
-export const CostumeForm = ({ onSuccess }) => {
+interface CostumeFormProps {
+  onSuccess: (newCostumes: Costume[]) => void;
+}
+
+export const CostumeForm: React.FC<CostumeFormProps> = ({ onSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -17,9 +21,22 @@ export const CostumeForm = ({ onSuccess }) => {
     deposit: '',
     status: 'available'
   });
-  const [imageFile, setImageFile] = useState(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  const handleSubmit = async (e) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
@@ -43,7 +60,8 @@ export const CostumeForm = ({ onSuccess }) => {
         status: 'available'
       });
       setImageFile(null);
-      if (onSuccess) onSuccess();
+      setImagePreview(null);
+      if (onSuccess) onSuccess([]);
     } catch (error) {
       console.error('Error saving costume:', error);
     } finally {
@@ -127,10 +145,20 @@ export const CostumeForm = ({ onSuccess }) => {
             <Input
               type="file"
               accept="image/*"
-              onChange={(e) => setImageFile(e.target.files[0])}
+              onChange={handleImageChange}
               className="mb-4"
             />
           </div>
+
+          {imagePreview && (
+            <div className="mt-2">
+              <img 
+                src={imagePreview} 
+                alt="Preview" 
+                className="max-w-[200px] h-auto rounded"
+              />
+            </div>
+          )}
 
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? 'Saving...' : 'Add Costume'}
@@ -139,30 +167,4 @@ export const CostumeForm = ({ onSuccess }) => {
       </CardContent>
     </Card>
   );
-}
-// Add to CostumeForm.js
-const [imagePreview, setImagePreview] = useState(null);
-
-// Add to file input onChange:
-const handleImageChange = (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    setImageFile(file);
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreview(reader.result);
-    };
-    reader.readAsDataURL(file);
-  }
 };
-
-// Add after file input:
-{imagePreview && (
-  <div className="mt-2">
-    <img 
-      src={imagePreview} 
-      alt="Preview" 
-      className="max-w-[200px] h-auto rounded"
-    />
-  </div>
-)};

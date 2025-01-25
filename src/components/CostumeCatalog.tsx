@@ -1,27 +1,35 @@
 import { useState, useEffect } from 'react';
-import { 
-  Tabs, 
-  TabsList, 
-  TabsTrigger, 
-  TabsContent 
-} from '@/components/ui/tabs';
-import { Auth } from '@/components/Auth'; // Adjust path as needed
+import { Tabs, TabsList, TabsTrigger, TabsContent } from './ui/tabs'; // Adjust the path as needed
+import { Auth } from './Auth';
 import { CostumeForm } from './CostumeForm';
-import { costumeService } from '../firebase/costumeService';
+
+interface Costume {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+}
+
+interface User {
+  id: string;
+}
 
 export const CostumeCatalog = () => {
-  const [costumes, setCostumes] = useState([]);
+  const [costumes, setCostumes] = useState<Costume[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const [activeTab, setActiveTab] = useState('catalog');
 
   useEffect(() => {
-    const loadCostumes = async () => {
-      const data = await costumeService.getCostumes();
-      setCostumes(data);
-    };
-    loadCostumes();
+    // Mock data for testing purposes
+    const mockCostumes: Costume[] = [
+      { id: '1', name: 'Vampire', description: 'Scary vampire costume', category: 'horror' },
+      { id: '2', name: 'Pirate', description: 'Swashbuckling pirate costume', category: 'adventure' },
+      { id: '3', name: 'Witch', description: 'Mystical witch costume', category: 'fantasy' },
+    ];
+    setCostumes(mockCostumes);
+    console.log('Mock costumes set:', mockCostumes);
   }, []);
 
   const filteredCostumes = costumes.filter(costume => {
@@ -31,26 +39,27 @@ export const CostumeCatalog = () => {
     return matchesCategory && matchesSearch;
   });
 
+  console.log('Filtered costumes:', filteredCostumes);
+
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab}>
       <TabsList>
         <TabsTrigger value="catalog">Catalog</TabsTrigger>
         <TabsTrigger value="admin">Admin</TabsTrigger>
       </TabsList>
-      <TabsContent value="catalog">
+      <TabsContent value="catalog" activeValue={activeTab}>
         {filteredCostumes.map(costume => (
           <div key={costume.id}>
-            {/* Render costume items */}
             {costume.name}
           </div>
         ))}
       </TabsContent>
-      <TabsContent value="admin">
+      <TabsContent value="admin" activeValue={activeTab}>
         {!user ? (
           <Auth onLogin={() => setActiveTab('admin')} />
         ) : (
-          <CostumeForm onSuccess={() => {
-            costumeService.getCostumes().then(setCostumes);
+          <CostumeForm onSuccess={(newCostumes: Costume[]) => {
+            setCostumes(newCostumes); // Update the costumes state with the new costumes
           }} />
         )}
       </TabsContent>
