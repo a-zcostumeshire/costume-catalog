@@ -3,6 +3,8 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from './ui/Tabs'; // Adjust 
 import { Auth } from './Auth';
 import { CostumeForm } from './CostumeForm';
 
+console.log('CostumeCatalog.tsx file loaded');
+
 interface Costume {
   id: string;
   name: string;
@@ -19,6 +21,8 @@ interface User {
 }
 
 export const CostumeCatalog = () => {
+  console.log('CostumeCatalog component rendered');
+
   const [costumes, setCostumes] = useState<Costume[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
@@ -27,14 +31,27 @@ export const CostumeCatalog = () => {
   const [editingCostume, setEditingCostume] = useState<Costume | null>(null);
 
   useEffect(() => {
-    // Mock data for testing purposes
-    const mockCostumes: Costume[] = [
-      { id: '1', name: 'Vampire', description: 'Scary vampire costume', category: 'horror', sizes: ['S', 'M'], price: 50, deposit: 20, status: 'available' },
-      { id: '2', name: 'Pirate', description: 'Swashbuckling pirate costume', category: 'adventure', sizes: ['M', 'L'], price: 60, deposit: 25, status: 'available' },
-      { id: '3', name: 'Witch', description: 'Mystical witch costume', category: 'fantasy', sizes: ['L', 'XL'], price: 70, deposit: 30, status: 'available' },
-    ];
-    setCostumes(mockCostumes);
-    console.log('Mock costumes set:', mockCostumes);
+    const handleDOMContentLoaded = () => {
+      console.log('Document ready state:', document.readyState);
+      // Mock data for testing purposes
+      const mockCostumes: Costume[] = [
+        { id: '1', name: 'Vampire', description: 'Scary vampire costume', category: 'horror', sizes: ['S', 'M'], price: 50, deposit: 20, status: 'available' },
+        { id: '2', name: 'Pirate', description: 'Swashbuckling pirate costume', category: 'adventure', sizes: ['M', 'L'], price: 60, deposit: 25, status: 'available' },
+        { id: '3', name: 'Witch', description: 'Mystical witch costume', category: 'fantasy', sizes: ['L', 'XL'], price: 70, deposit: 30, status: 'available' },
+      ];
+      setCostumes(mockCostumes);
+      console.log('Mock costumes set:', mockCostumes);
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', handleDOMContentLoaded);
+    } else {
+      handleDOMContentLoaded();
+    }
+
+    return () => {
+      document.removeEventListener('DOMContentLoaded', handleDOMContentLoaded);
+    };
   }, []);
 
   const filteredCostumes = costumes.filter(costume => {
@@ -49,6 +66,7 @@ export const CostumeCatalog = () => {
   return (
     <div>
       <h1>Costume Catalog</h1>
+      <p>Document ready state: {document.readyState}</p>
       <style jsx>{`
         .tabs {
           display: flex;
