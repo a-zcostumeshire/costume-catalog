@@ -27,18 +27,16 @@ export const CostumeCatalog = () => {
  const [searchTerm, setSearchTerm] = useState('');
  const [user, setUser] = useState<User | null>(null);
  const [activeTab, setActiveTab] = useState('catalog');
-
+ 
  useEffect(() => {
-   const loadCostumes = async () => {
-     try {
-       const data = await costumeService.getCostumes();
-       setCostumes(data);
-     } catch (error) {
-       console.error('Failed to load costumes:', error);
-     }
-   };
-   loadCostumes();
- }, []);
+    // Mock data for testing purposes
+    const mockCostumes: Costume[] = [
+      { id: '1', name: 'Vampire', description: 'Scary vampire costume', category: 'horror' },
+      { id: '2', name: 'Pirate', description: 'Swashbuckling pirate costume', category: 'adventure' },
+      { id: '3', name: 'Witch', description: 'Mystical witch costume', category: 'fantasy' },
+    ];
+    setCostumes(mockCostumes);
+  }, []);
 
  const filteredCostumes = costumes.filter(costume => {
    const matchesCategory = selectedCategory === 'all' || costume.category === selectedCategory;
