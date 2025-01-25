@@ -29,7 +29,7 @@ export const Tabs: React.FC<TabsProps> = ({ value, onValueChange, children }) =>
     <div>
       {React.Children.map(children, child => {
         if (React.isValidElement(child) && child.type === TabsList) {
-          return React.cloneElement(child, { value, onValueChange });
+          return React.cloneElement(child as React.ReactElement<any>, { value, onValueChange });
         }
         return child;
       })}
@@ -42,7 +42,7 @@ export const TabsList: React.FC<TabsListProps> = ({ value, onValueChange, childr
     <div>
       {React.Children.map(children, child => {
         if (React.isValidElement(child) && child.type === TabsTrigger) {
-          return React.cloneElement(child, { onValueChange });
+          return React.cloneElement(child as React.ReactElement<any>, { onValueChange });
         }
         return child;
       })}
