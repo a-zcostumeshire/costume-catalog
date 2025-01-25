@@ -6,6 +6,17 @@ import { Textarea } from './ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { costumeService } from '../firebase/costumeService';
 
+interface Costume {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  sizes: string[];
+  price: number;
+  deposit: number;
+  status: string;
+}
+
 interface CostumeFormProps {
   onSuccess: (newCostumes: Costume[]) => void;
 }
