@@ -8,6 +8,10 @@ interface Costume {
   name: string;
   description: string;
   category: string;
+  sizes: string[];
+  price: number;
+  deposit: number;
+  status: string;
 }
 
 interface User {
@@ -25,9 +29,9 @@ export const CostumeCatalog = () => {
   useEffect(() => {
     // Mock data for testing purposes
     const mockCostumes: Costume[] = [
-      { id: '1', name: 'Vampire', description: 'Scary vampire costume', category: 'horror' },
-      { id: '2', name: 'Pirate', description: 'Swashbuckling pirate costume', category: 'adventure' },
-      { id: '3', name: 'Witch', description: 'Mystical witch costume', category: 'fantasy' },
+      { id: '1', name: 'Vampire', description: 'Scary vampire costume', category: 'horror', sizes: ['S', 'M'], price: 50, deposit: 20, status: 'available' },
+      { id: '2', name: 'Pirate', description: 'Swashbuckling pirate costume', category: 'adventure', sizes: ['M', 'L'], price: 60, deposit: 25, status: 'available' },
+      { id: '3', name: 'Witch', description: 'Mystical witch costume', category: 'fantasy', sizes: ['L', 'XL'], price: 70, deposit: 30, status: 'available' },
     ];
     setCostumes(mockCostumes);
     console.log('Mock costumes set:', mockCostumes);
