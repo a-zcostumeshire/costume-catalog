@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import React from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { CostumeForm } from './CostumeForm';
 
-export const EditCostumeModal = ({ costume, isOpen, onClose, onSave }) => {
+interface EditCostumeModalProps {
+  costume: any;
+  onSave: () => void;
+  onClose: () => void;
+}
+
+const EditCostumeModal: React.FC<EditCostumeModalProps> = ({ costume, onSave, onClose }) => {
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={true} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Edit Costume</DialogTitle>
@@ -21,3 +27,5 @@ export const EditCostumeModal = ({ costume, isOpen, onClose, onSave }) => {
     </Dialog>
   );
 };
+
+export default EditCostumeModal;

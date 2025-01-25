@@ -20,9 +20,10 @@ interface Costume {
 interface CostumeFormProps {
   initialData?: Costume;
   onSuccess: (newCostumes: Costume[]) => void;
+  isEditing?: boolean;
 }
 
-export const CostumeForm: React.FC<CostumeFormProps> = ({ initialData, onSuccess }) => {
+export const CostumeForm: React.FC<CostumeFormProps> = ({ initialData, onSuccess, isEditing = false }) => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -98,7 +99,7 @@ export const CostumeForm: React.FC<CostumeFormProps> = ({ initialData, onSuccess
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Add New Costume</CardTitle>
+        <CardTitle>{isEditing ? 'Edit Costume' : 'Add New Costume'}</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -187,7 +188,7 @@ export const CostumeForm: React.FC<CostumeFormProps> = ({ initialData, onSuccess
           )}
 
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? 'Saving...' : 'Add Costume'}
+            {loading ? 'Saving...' : isEditing ? 'Save Changes' : 'Add Costume'}
           </Button>
         </form>
       </CardContent>
