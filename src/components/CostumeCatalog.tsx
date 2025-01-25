@@ -44,8 +44,8 @@ export const CostumeCatalog = () => {
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab}>
       <TabsList value={activeTab} onValueChange={setActiveTab}>
-        <TabsTrigger value="catalog">Catalog</TabsTrigger>
-        <TabsTrigger value="admin">Admin</TabsTrigger>
+        <TabsTrigger value="catalog" onValueChange={setActiveTab}>Catalog</TabsTrigger>
+        <TabsTrigger value="admin" onValueChange={setActiveTab}>Admin</TabsTrigger>
       </TabsList>
       <TabsContent value="catalog" activeValue={activeTab}>
         {filteredCostumes.map(costume => (
