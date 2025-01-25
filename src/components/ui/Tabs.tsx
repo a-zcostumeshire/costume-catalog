@@ -1,4 +1,4 @@
-import React, { useState, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 interface TabsProps {
   value: string;
@@ -42,7 +42,7 @@ export const TabsList: React.FC<TabsListProps> = ({ value, onValueChange, childr
     <div>
       {React.Children.map(children, child => {
         if (React.isValidElement(child) && child.type === TabsTrigger) {
-          return React.cloneElement(child, { value, onValueChange });
+          return React.cloneElement(child, { onValueChange });
         }
         return child;
       })}
