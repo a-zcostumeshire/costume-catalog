@@ -7,16 +7,20 @@ interface TabsProps {
 }
 
 interface TabsListProps {
+  value: string;
+  onValueChange: (value: string) => void;
   children: ReactNode;
 }
 
 interface TabsTriggerProps {
   value: string;
+  onValueChange: (value: string) => void;
   children: ReactNode;
 }
 
 interface TabsContentProps {
   value: string;
+  activeValue: string;
   children: ReactNode;
 }
 
@@ -33,7 +37,7 @@ export const Tabs: React.FC<TabsProps> = ({ value, onValueChange, children }) =>
   );
 };
 
-export const TabsList: React.FC<TabsListProps & { value: string; onValueChange: (value: string) => void }> = ({ value, onValueChange, children }) => {
+export const TabsList: React.FC<TabsListProps> = ({ value, onValueChange, children }) => {
   return (
     <div>
       {React.Children.map(children, child => {
@@ -46,7 +50,7 @@ export const TabsList: React.FC<TabsListProps & { value: string; onValueChange: 
   );
 };
 
-export const TabsTrigger: React.FC<TabsTriggerProps & { value: string; onValueChange: (value: string) => void }> = ({ value, onValueChange, children }) => {
+export const TabsTrigger: React.FC<TabsTriggerProps> = ({ value, onValueChange, children }) => {
   return (
     <button onClick={() => onValueChange(value)}>
       {children}
@@ -54,6 +58,6 @@ export const TabsTrigger: React.FC<TabsTriggerProps & { value: string; onValueCh
   );
 };
 
-export const TabsContent: React.FC<TabsContentProps & { value: string; activeValue: string }> = ({ value, activeValue, children }) => {
+export const TabsContent: React.FC<TabsContentProps> = ({ value, activeValue, children }) => {
   return activeValue === value ? <div>{children}</div> : null;
 };
