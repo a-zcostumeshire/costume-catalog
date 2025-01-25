@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from './ui/card';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
@@ -18,10 +18,11 @@ interface Costume {
 }
 
 interface CostumeFormProps {
+  initialData?: Costume;
   onSuccess: (newCostumes: Costume[]) => void;
 }
 
-export const CostumeForm: React.FC<CostumeFormProps> = ({ onSuccess }) => {
+export const CostumeForm: React.FC<CostumeFormProps> = ({ initialData, onSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -34,6 +35,20 @@ export const CostumeForm: React.FC<CostumeFormProps> = ({ onSuccess }) => {
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        name: initialData.name,
+        category: initialData.category,
+        description: initialData.description,
+        sizes: initialData.sizes.join(', '),
+        price: initialData.price.toString(),
+        deposit: initialData.deposit.toString(),
+        status: initialData.status
+      });
+    }
+  }, [initialData]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
