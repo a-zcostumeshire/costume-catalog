@@ -18,7 +18,7 @@ interface Costume {
 }
 
 interface CostumeFormProps {
-  initialData?: Costume;
+  initialData?: Costume | null;
   onSuccess: (newCostumes: Costume[]) => void;
   isEditing?: boolean;
 }
