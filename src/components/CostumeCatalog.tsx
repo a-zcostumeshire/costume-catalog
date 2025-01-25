@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from './ui/tabs'; // Adjust the path as needed
+import { Tabs, TabsList, TabsTrigger, TabsContent } from './ui/Tabs'; // Adjust the path as needed
 import { Auth } from './Auth';
 import { CostumeForm } from './CostumeForm';
 
@@ -43,7 +43,7 @@ export const CostumeCatalog = () => {
 
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab}>
-      <TabsList>
+      <TabsList value={activeTab} onValueChange={setActiveTab}>
         <TabsTrigger value="catalog">Catalog</TabsTrigger>
         <TabsTrigger value="admin">Admin</TabsTrigger>
       </TabsList>
